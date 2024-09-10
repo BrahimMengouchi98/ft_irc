@@ -6,7 +6,7 @@
 
 class Client;
 
-class Server //-> class for server
+class Server
 {
 	private:
 		int port; //-> server port
@@ -30,19 +30,32 @@ class Server //-> class for server
 		std::string getPassword();
 		Client 		*getClient(int fd);
 
+
+		// Setters
+		void setNickname(std::string cmd, int fd);
+		void setUsername(std::string& username, int fd);
+
 		void init(int port, std::string pwd); //-> server initialization
 		void SerSocket(); //-> server socket creation
 		void AcceptNewClient(); //-> accept new client
 		void ReceiveNewData(int fd); //-> receive new data from a registered client
 
-		static void SignalHandler(int signum); //-> signal handler
+		//-> signal handler
+		static void SignalHandler(int signum); 
 	
 		void CloseFds(); //-> close file descriptors
 		void ClearClients(int fd); //-> clear clients
 
+		// for extracting data from client
 		std::vector<std::string> splitBuffer(std::string str);
 		std::vector<std::string> extractTokens(std::string& cmd);
 		void execCmd(std::string &cmd, int fd);
+
+		// for Authenticate User
+		bool isValidNickname(std::string& nickname);
+		bool isNicknameInUse(std::string& nickname);
+		void clientAuth(int fd, std::string cmd);
+		bool isRegistered(int fd);
 };
 
 #endif

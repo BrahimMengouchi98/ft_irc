@@ -2,7 +2,7 @@ NAME = ircserv
 CC = c++
 CFLAGS = -std=c++98 #-Wall -Wextra -Werror 
 
-SRCS = main.cpp src/Client.cpp src/Server.cpp 
+SRCS = main.cpp src/Client.cpp src/Server.cpp src/Auth.cpp 
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -15,10 +15,10 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJS) $(OBJS_BONUS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME) $(NAME_BOUNUS) a.out
+	@rm -f $(NAME)
 
 re: fclean all
 

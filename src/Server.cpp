@@ -164,10 +164,11 @@ void Server::ReceiveNewData(int fd)
 
 		// split buffer line by line
 		cmd = splitBuffer(client->getBuffer());
-		
+		//std::cout << this->server_fdsocket << " : " << fd << "\n";
 		for(size_t i = 0; i < cmd.size(); i++)
 		{
 			execCmd(cmd[i], fd);
+			//std::cout << cmd[i] << "\n";
 			std::cout << "------------------\n";
 			//std::cout << "line: " << cmd[i] << "\n";
 			
@@ -206,27 +207,73 @@ std::vector<std::string> Server::extractTokens(std::string& cmd)
 	return vec;
 }
 
+bool Server::isRegistered(int fd)
+{
+	if (!getClient(fd) || getClient(fd)->getNickname().empty() 
+		|| getClient(fd)->getUsername().empty() 
+		|| getClient(fd)->getNickname() == "*"  
+		|| !getClient(fd)->getIsLogedIn())
+		return false;
+	return true;
+}
+
 void Server::execCmd(std::string &cmd, int fd)
 {
 	std::vector<std::string> tokens = extractTokens(cmd);
-	if (tokens[0] == "NICK")
-		std::cout << "kick commnad\n";
-	else
-		std::cout << "unknown command \n";
+	size_t found = cmd.find_first_not_of(" \t\v");
+	if(found != std::string::npos)
+		cmd = cmd.substr(found);
+
+	if (tokens[0] == "PASS")
+	{ 
+		std::cout << "pass\n";
+		// authenticate user
+		clientAuth(fd, cmd);
+	}
+	else if (tokens[0] == "NICK")
+	{
+		// set a nickname
+		setNickname(cmd, fd);
+		//std::cout << "nickname: " << getClient(fd)->getNickname();
+		//std::cout << "nick\n";
+	}
+	else if(tokens[0] == "USER")
+	{
+		// set username
+		//std::cout << "user\n";
+		setUsername(cmd, fd);
+	}
+	else if (tokens[0] == "QUIT")
+	{
+		// quit
+		std::cout << "quit\n";
+	}
+	else if (isRegistered(fd))
+	{
+		//std::cout << "registered !!\n";
+	}
 	// for(size_t i = 0; i < tokens.size(); ++i)
 	// 	std::cout << "token: " << tokens[i] << "\n";
 }
-
+//-> clear the clients
 void Server::ClearClients(int fd)
-{ //-> clear the clients
+{ 
+	//-> remove the client from the pollfd
 	for(size_t i = 0; i < fds.size(); i++)
-	{ //-> remove the client from the pollfd
+	{ 
 		if (fds[i].fd == fd)
-			{fds.erase(fds.begin() + i); break;}
+		{
+			fds.erase(fds.begin() + i); 
+			break;
+		}
 	}
+	//-> remove the client from the vector of clients
 	for(size_t i = 0; i < clients.size(); i++)
-	{ //-> remove the client from the vector of clients
+	{ 
 		if (clients[i].getFd() == fd)
-			{clients.erase(clients.begin() + i); break;}
+		{
+			clients.erase(clients.begin() + i); 
+			break;
+		}
 	}
 }
