@@ -28,6 +28,7 @@ Client &Client::operator=(Client const &src)
 		this->_buffer = src._buffer;
 		this->isRegistered = src.isRegistered;
 		this->isLogedin = src.isLogedin;
+		this->channelsInvite = src.channelsInvite;
 	}
 	return *this;
 }
@@ -47,10 +48,32 @@ bool Client::getIsLogedIn(){return this->isLogedin;}
 
 std::string Client::getUsername(){return this->username;}
 
-// Setters
-void Client::setFd(int fd) {_fd = fd;}
+bool Client::getInviteChannel(std::string &ChName)
+{
+	for (size_t i = 0; i < this->channelsInvite.size(); i++)
+	{
+		if (this->channelsInvite[i] == ChName)
+			return true;
+	}
+	return false;
+}
 
-void Client::setIpAdd(std::string ipadd) {_ipadd = ipadd;}
+std::string Client::getHostname()
+{
+	std::string hostname = this->getNickname() + "!" + this->getUsername();
+	return hostname;
+}
+
+// Setters
+void Client::setFd(int fd) 
+{
+	_fd = fd;
+}
+
+void Client::setIpAdd(std::string ipadd) 
+{
+	_ipadd = ipadd;
+}
 
 void Client::setBuffer(std::string buffer) { _buffer += buffer;}
 
@@ -62,3 +85,25 @@ void Client::setUsername(std::string& username) {this->username = username;}
 
 void Client::setIsRegistered(bool value) {this->isRegistered = value;}
 
+//---------------//Methods
+void Client::clearBuffer()
+{
+	_buffer.clear();
+}
+
+void Client::addChannelInvite(std::string &chname)
+{
+	channelsInvite.push_back(chname);
+}
+
+void Client::removeChannelInvite(std::string &chname)
+{
+	for (size_t i = 0; i < this->channelsInvite.size(); i++)
+	{
+		if (this->channelsInvite[i] == chname)
+		{
+			this->channelsInvite.erase(this->channelsInvite.begin() + i); 
+			return;
+		}
+	}
+}

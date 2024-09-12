@@ -14,6 +14,7 @@ class Client
 		std::string nickname;
 		bool 		isLogedin;
 		std::string username;
+		std::vector<std::string> channelsInvite;
 
 	public:
 		Client();
@@ -29,6 +30,8 @@ class Client
 		std::string getNickname();
 		bool 		getIsLogedIn();
 		std::string getUsername();
+		bool 		getInviteChannel(std::string &ChName);
+		std::string getHostname();
 
 		// Setters
 		void setFd(int fd); //-> setter for fd
@@ -38,6 +41,11 @@ class Client
 		void setIsLogedin(bool value);
 		void setUsername(std::string& username);
 		void setIsRegistered(bool value);
+
+		//---------------//Methods
+	void clearBuffer();
+	void addChannelInvite(std::string &chname);
+	void removeChannelInvite(std::string &chname);
 };
 
 #endif

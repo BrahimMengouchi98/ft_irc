@@ -14,9 +14,9 @@ Server &Server::operator=(Server const &src)
 	{
 		this->port = src.port;
 		this->server_fdsocket = src.server_fdsocket;
-		// this->password = src.password;
+		this->pwd = src.pwd;
 		this->clients = src.clients;
-		// this->channels = src.channels;
+		this->channels = src.channels;
 		this->fds = src.fds;
 	}
 	return *this;
@@ -250,8 +250,50 @@ void Server::execCmd(std::string &cmd, int fd)
 	}
 	else if (isRegistered(fd))
 	{
-		//std::cout << "registered !!\n";
+
+		if (tokens[0] == "KICK")
+		{
+			//KICK(cmd, fd);
+
+		}
+		else if (tokens[0] == "JOIN")
+		{
+			JOIN(tokens, fd);
+			//std::cout << "join\n";
+
+		}
+		else if (tokens[0] == "TOPIC")
+		{
+			//Topic(cmd, fd);
+
+		}
+		else if (tokens[0] == "MODE")
+		{
+			
+		}
+		else if (tokens[0] == "PART")
+		{
+
+			//PART(cmd, fd);
+		}
+		else if (tokens[0] == "PRIVMSG")
+		{
+			std::cout << "privmsg!!\n";
+			PRIVMSG(cmd, fd);
+
+		}
+		else if (tokens[0] == "INVITE")
+		{
+			std::cout << "invite\n";
+			//Invite(cmd,fd);
+
+		}
+		else if (tokens.size())
+			sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickname(), tokens[0]), fd);
 	}
+	else if (!isRegistered(fd))
+		sendResponse(ERR_NOTREGISTERED(getClient(fd)->getNickname()), fd);
+		//std::cout << "registered !!\n";
 	// for(size_t i = 0; i < tokens.size(); ++i)
 	// 	std::cout << "token: " << tokens[i] << "\n";
 }
@@ -274,6 +316,69 @@ void Server::ClearClients(int fd)
 		{
 			clients.erase(clients.begin() + i); 
 			break;
+		}
+	}
+}
+
+//---------------//Send Methods
+
+void Server::sendError(int code, std::string clientname, int fd, std::string msg)
+{
+	std::stringstream ss;
+	ss << ":localhost " << code << " " << clientname << msg;
+	std::string resp = ss.str();
+	if(send(fd, resp.c_str(), resp.size(),0) == -1)
+		std::cerr << "send() faild" << std::endl;
+}
+
+void Server::sendError(int code, std::string clientname, std::string channelname, int fd, std::string msg)
+{
+	std::stringstream ss;
+	ss << ":localhost " << code << " " << clientname << " " << channelname << msg;
+	std::string resp = ss.str();
+	if(send(fd, resp.c_str(), resp.size(),0) == -1)
+		std::cerr << "send() faild" << std::endl;
+}
+
+void Server::sendResponse(std::string response, int fd)
+{
+	if(send(fd, response.c_str(), response.size(), 0) == -1)
+		std::cerr << "Response send() faild" << std::endl;
+}
+
+//---------------//remove Methods
+void Server::removeClient(int fd)
+{
+	for (size_t i = 0; i < this->clients.size(); i++)
+	{
+		if (this->clients[i].getFd() == fd)
+		{
+			this->clients.erase(this->clients.begin() + i); 
+			return;
+		}
+	}
+}
+
+void Server::removeChannel(std::string name)
+{
+	for (size_t i = 0; i < this->channels.size(); i++)
+	{
+		if (this->channels[i].getName() == name)
+		{
+			this->channels.erase(this->channels.begin() + i); 
+			return;
+		}
+	}
+}
+
+void Server::removeFd(int fd)
+{
+	for (size_t i = 0; i < this->fds.size(); i++)
+	{
+		if (this->fds[i].fd == fd)
+		{
+			this->fds.erase(this->fds.begin() + i); 
+			return;
 		}
 	}
 }

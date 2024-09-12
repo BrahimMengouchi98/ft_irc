@@ -2,7 +2,8 @@ NAME = ircserv
 CC = c++
 CFLAGS = -std=c++98 #-Wall -Wextra -Werror 
 
-SRCS = main.cpp src/Client.cpp src/Server.cpp src/Auth.cpp 
+SRCS = main.cpp src/Client.cpp src/Server.cpp src/Auth.cpp \
+		src/Channel.cpp cmd/JOIN.cpp cmd/PRIVMSG.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -11,7 +12,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-%.o: %.cpp inc/Server.hpp inc/Client.hpp
+%.o: %.cpp inc/Server.hpp inc/Client.hpp inc/Channel.hpp inc/replies.hpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
