@@ -80,9 +80,36 @@ void Channel::setCreateAt()
 	oss << _time;
 	this->created_at = std::string(oss.str());
 }
+
+void Channel::setModeAtIndex(size_t index, bool mode)
+{
+	modes[index].second = mode;
+}
+
 //---------------//setters
 
 //---------------//getters
+
+bool Channel::isClientInChannel(std::string &nickname)
+{
+	for(size_t i = 0; i < clients.size(); i++)
+	{
+		if(clients[i].getNickname() == nickname)
+			return true;
+	}
+	for(size_t i = 0; i < admins.size(); i++)
+	{
+		if(admins[i].getNickname() == nickname)
+			return true;
+	}
+	return false;
+}
+
+bool Channel::getModeAtIndex(size_t index)
+{
+	return modes[index].second;
+}
+
 int Channel::getInvitOnly() 
 {
 	return this->invit_only;
@@ -184,6 +211,20 @@ std::string Channel::getClientsInChannel()
 	return list;
 }
 
+std::string Channel::getModes()
+{
+	std::string mode;
+	for(size_t i = 0; i < modes.size(); i++)
+	{
+		//if(modes[i].first != 'o' && modes[i].second)
+			mode.push_back(modes[i].first);
+	}
+	if(!mode.empty())
+		mode.insert(mode.begin(),'+');
+	std::cout << "mode: " << mode << "\n";
+	return mode;
+}
+
 //---------------//getters
 
 //---------------//Methods
@@ -220,6 +261,41 @@ void Channel::removeAdmin(int fd)
 			break;
 		}
 	}
+}
+
+
+bool Channel::changeClientToAdmin(std::string& nickname)
+{
+	size_t i = 0;
+	for(; i < clients.size(); i++)
+	{
+		if(clients[i].getNickname() == nickname)
+			break;
+	}
+	if(i < clients.size())
+	{
+		admins.push_back(clients[i]);
+		clients.erase(i + clients.begin());
+		return true;
+	}
+	return false;
+}
+
+bool Channel::changeAdminToClient(std::string& nickname)
+{
+	size_t i = 0;
+	for(; i < admins.size(); i++)
+	{
+		if(admins[i].getNickname() == nickname)
+			break;
+	}
+	if(i < admins.size())
+	{
+		clients.push_back(admins[i]);
+		admins.erase(i + admins.begin());
+		return true;
+	}
+	return false;
 }
 
 //---------------//SendToAll

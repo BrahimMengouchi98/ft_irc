@@ -37,6 +37,7 @@ class Channel
 	void setPassword(std::string password);
 	void setName(std::string name);
 	void setCreateAt();
+	void setModeAtIndex(size_t index, bool mode);
 	//void setTime(std::string time);
 	//void set_topicRestriction(bool value);
 
@@ -48,11 +49,15 @@ class Channel
 	int getLimit();
 	int getClientsNumber();
 
+	bool getModeAtIndex(size_t index);
+	bool isClientInChannel(std::string &nickname);
+
 	std::string getTopicName();
 	std::string getPassword();
 	std::string getName();
 	std::string getCreationAt();
 	std::string getClientsInChannel();
+	std::string getModes();
 	
 	Client *getClient(int fd);
 	Client *getAdmin(int fd);
@@ -63,6 +68,8 @@ class Channel
 	void addAdmin(Client newClient);
 	void removeClient(int fd);
 	void removeAdmin(int fd);
+	bool changeClientToAdmin(std::string& nickname);
+	bool changeAdminToClient(std::string& nickname);
 
 	//---------------//SendToAll
 	void sendToAll(std::string rpl1);

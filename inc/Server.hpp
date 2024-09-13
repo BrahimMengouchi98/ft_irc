@@ -30,7 +30,7 @@ class Server
 		int 		getPort();
 		std::string getPassword();
 		Client 		*getClient(int fd);
-
+		Client 		*getClientByNickname(std::string nickname);
 		Channel 	*getChannel(std::string name);
 
 		// Setters
@@ -84,6 +84,16 @@ class Server
 		// PRIVMSG CMD
 		//void 	PRIVMSG(std::vector<std::string> tokens, int fd);
 		void	PRIVMSG(std::string cmd, int fd);
+		void	CheckExistingChannelsAndClients(std::vector<std::string> &tmp, int fd);
+		
+		
+		// MODE cmd
+		// void		MODE(std::string& cmd, int fd);
+		void		MODE(std::vector<std::string> tokens, int fd);
+		void 		password_mode(std::string token, Channel *channel, char opera, int fd);
+		void 		operator_privilege(std::string token, Channel *channel, int fd, char opera);
+		
+		
 		// QUIT CMD
 };
 

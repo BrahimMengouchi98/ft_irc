@@ -37,6 +37,26 @@ Client *Server::getClient(int fd)
 	return NULL;
 }
 
+Client 		*Server::getClientByNickname(std::string nickname)
+{
+	for (size_t i = 0; i < this->clients.size(); i++)
+	{
+		if (this->clients[i].getNickname() == nickname)
+			return &this->clients[i];
+	}
+	return NULL;
+}
+
+Channel *Server::getChannel(std::string name)
+{
+	for (size_t i = 0; i < this->channels.size(); i++)
+	{
+		if (this->channels[i].getName() == name)
+			return &channels[i];
+	}
+	return NULL;
+}
+
 void Server::SignalHandler(int signum)
 {
 	(void)signum;
@@ -173,6 +193,8 @@ void Server::ReceiveNewData(int fd)
 			//std::cout << "line: " << cmd[i] << "\n";
 			
 		}
+		if(getClient(fd))
+			getClient(fd)->clearBuffer();
 		//std::cout << "bytes: " << bytes << "\n";
 		//std::cout << YEL << "Client <" << fd << "> Data: " << WHI << buff;
 		//here you can add your code to process the received data: parse, check, authenticate, handle the command, etc...
@@ -223,7 +245,7 @@ void Server::execCmd(std::string &cmd, int fd)
 	size_t found = cmd.find_first_not_of(" \t\v");
 	if(found != std::string::npos)
 		cmd = cmd.substr(found);
-
+	std::cout << "token: " << tokens[0] << "\n";
 	if (tokens[0] == "PASS")
 	{ 
 		std::cout << "pass\n";
@@ -269,7 +291,8 @@ void Server::execCmd(std::string &cmd, int fd)
 		}
 		else if (tokens[0] == "MODE")
 		{
-			
+			// MODE(cmd, fd);
+			MODE(tokens, fd);
 		}
 		else if (tokens[0] == "PART")
 		{
