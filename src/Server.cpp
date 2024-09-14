@@ -245,77 +245,80 @@ void Server::execCmd(std::string &cmd, int fd)
 	size_t found = cmd.find_first_not_of(" \t\v");
 	if(found != std::string::npos)
 		cmd = cmd.substr(found);
-	std::cout << "token: " << tokens[0] << "\n";
-	if (tokens[0] == "PASS")
-	{ 
-		std::cout << "pass\n";
-		// authenticate user
-		clientAuth(fd, cmd);
-	}
-	else if (tokens[0] == "NICK")
+	if (tokens.size())
 	{
-		// set a nickname
-		setNickname(cmd, fd);
-		//std::cout << "nickname: " << getClient(fd)->getNickname();
-		//std::cout << "nick\n";
+		std::cout << "token: " << tokens[0] << "\n";
+		if (tokens[0] == "PASS" || tokens[0] == "pass")
+		{ 
+			std::cout << "pass\n";
+			// authenticate user
+			clientAuth(fd, cmd);
+		}
+		else if (tokens[0] == "NICK" || tokens[0] == "nick")
+		{
+			// set a nickname
+			setNickname(cmd, fd);
+			//std::cout << "nickname: " << getClient(fd)->getNickname();
+			//std::cout << "nick\n";
+		}
+		else if(tokens[0] == "USER" || tokens[0] == "user")
+		{
+			// set username
+			//std::cout << "user\n";
+			setUsername(cmd, fd);
+		}
+		else if (tokens[0] == "QUIT" || tokens[0] == "quit")
+		{
+			// quit
+			std::cout << "quit\n";
+		}
+		else if (isRegistered(fd))
+		{
+
+			if (tokens[0] == "KICK" || tokens[0] == "kick")
+			{
+				//KICK(cmd, fd);
+
+			}
+			else if (tokens[0] == "JOIN" || tokens[0] == "join")
+			{
+				JOIN(tokens, fd);
+				//std::cout << "join\n";
+
+			}
+			else if (tokens[0] == "TOPIC" || tokens[0] == "topic")
+			{
+				//Topic(cmd, fd);
+
+			}
+			else if (tokens[0] == "MODE" || tokens[0] == "mode")
+			{
+				// MODE(cmd, fd);
+				MODE(tokens, fd);
+			}
+			else if (tokens[0] == "PART" || tokens[0] == "part")
+			{
+
+				//PART(cmd, fd);
+			}
+			else if (tokens[0] == "PRIVMSG" || tokens[0] == "privmsg")
+			{
+				std::cout << "privmsg!!\n";
+				PRIVMSG(cmd, fd);
+
+			}
+			else if (tokens[0] == "INVITE" || tokens[0] == "invite")
+			{
+				std::cout << "invite\n";
+				//Invite(cmd,fd);
+
+			}
+			else
+				sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickname(), tokens[0]), fd);
+		}
+		else if (!isRegistered(fd))
+			sendResponse(ERR_NOTREGISTERED(getClient(fd)->getNickname()), fd);
 	}
-	else if(tokens[0] == "USER")
-	{
-		// set username
-		//std::cout << "user\n";
-		setUsername(cmd, fd);
-	}
-	else if (tokens[0] == "QUIT")
-	{
-		// quit
-		std::cout << "quit\n";
-	}
-	else if (isRegistered(fd))
-	{
-
-		if (tokens[0] == "KICK")
-		{
-			//KICK(cmd, fd);
-
-		}
-		else if (tokens[0] == "JOIN")
-		{
-			JOIN(tokens, fd);
-			//std::cout << "join\n";
-
-		}
-		else if (tokens[0] == "TOPIC")
-		{
-			//Topic(cmd, fd);
-
-		}
-		else if (tokens[0] == "MODE")
-		{
-			// MODE(cmd, fd);
-			MODE(tokens, fd);
-		}
-		else if (tokens[0] == "PART")
-		{
-
-			//PART(cmd, fd);
-		}
-		else if (tokens[0] == "PRIVMSG")
-		{
-			std::cout << "privmsg!!\n";
-			PRIVMSG(cmd, fd);
-
-		}
-		else if (tokens[0] == "INVITE")
-		{
-			std::cout << "invite\n";
-			//Invite(cmd,fd);
-
-		}
-		else if (tokens.size())
-			sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickname(), tokens[0]), fd);
-	}
-	else if (!isRegistered(fd))
-		sendResponse(ERR_NOTREGISTERED(getClient(fd)->getNickname()), fd);
 		//std::cout << "registered !!\n";
 	// for(size_t i = 0; i < tokens.size(); ++i)
 	// 	std::cout << "token: " << tokens[i] << "\n";

@@ -2,6 +2,8 @@
 
 #define CRLF "\r\n"
 
+#define RPL_KEYREMOVED(channel) (": MODE " + channel + " -k : Password has been removed from the channel!" + CRLF)
+
 #define RPL_CONNECTED(nickname) (": 001 " + nickname + " : Welcome to the IRC server!" + CRLF)
 #define RPL_UMODEIS(hostname, channelname, mode, user)  ":" + hostname + " MODE " + channelname + " " + mode + " " + user + CRLF
 #define RPL_CREATIONTIME(nickname, channelname, creationtime) ": 329 " + nickname + " #" + channelname + " " + creationtime + CRLF

@@ -8,6 +8,7 @@ Channel::Channel()
 	this->limit = 0;
 	this->name = "";
 	this->topic_name = "";
+	this->topic_restriction = false;
 	char charaters[5] = {'i', 't', 'k', 'o', 'l'};
 	for(int i = 0; i < 5; i++)
 		modes.push_back(std::make_pair(charaters[i], false));
@@ -25,7 +26,7 @@ Channel &Channel::operator=(Channel const &src)
 		this->topic = src.topic;
 		this->key = src.key;
 		this->limit = src.limit;
-		//this->topic_restriction = src.topic_restriction;
+		this->topic_restriction = src.topic_restriction;
 		this->name = src.name;
 		this->password = src.password;
 		this->created_at = src.created_at;
@@ -84,6 +85,11 @@ void Channel::setCreateAt()
 void Channel::setModeAtIndex(size_t index, bool mode)
 {
 	modes[index].second = mode;
+}
+
+void Channel::setTopicRestriction(bool value)
+{
+	this->topic_restriction = value;
 }
 
 //---------------//setters

@@ -12,7 +12,7 @@ class Channel
 		int topic;
 		int key;
 		int limit;
-		// bool topic_restriction;
+		bool topic_restriction;
 		std::string name;
 		//std::string time_creation;
 		std::string password;
@@ -39,7 +39,7 @@ class Channel
 	void setCreateAt();
 	void setModeAtIndex(size_t index, bool mode);
 	//void setTime(std::string time);
-	//void set_topicRestriction(bool value);
+	void setTopicRestriction(bool value);
 
 
 	//---------------//Getters

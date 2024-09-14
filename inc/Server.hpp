@@ -90,8 +90,10 @@ class Server
 		// MODE cmd
 		// void		MODE(std::string& cmd, int fd);
 		void		MODE(std::vector<std::string> tokens, int fd);
-		void 		password_mode(std::string token, Channel *channel, char opera, int fd);
-		void 		operator_privilege(std::string token, Channel *channel, int fd, char opera);
+		bool 		password_mode(std::string token, Channel *channel, char opera, int fd);
+		bool 		operator_mode(std::string token, Channel *channel, int fd, char opera);
+		bool		limit_mode(std::string token,  Channel *channel, char opera, int fd);
+		void		topic_restriction_mode(Channel *channel , char opera);
 		
 		
 		// QUIT CMD
