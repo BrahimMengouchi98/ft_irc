@@ -269,7 +269,6 @@ void Channel::removeAdmin(int fd)
 	}
 }
 
-
 bool Channel::changeClientToAdmin(std::string& nickname)
 {
 	size_t i = 0;

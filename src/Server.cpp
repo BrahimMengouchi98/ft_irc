@@ -298,8 +298,7 @@ void Server::execCmd(std::string &cmd, int fd)
 			}
 			else if (tokens[0] == "PART" || tokens[0] == "part")
 			{
-
-				//PART(cmd, fd);
+				PART(tokens, fd);
 			}
 			else if (tokens[0] == "PRIVMSG" || tokens[0] == "privmsg")
 			{
@@ -385,7 +384,7 @@ void Server::removeClient(int fd)
 	}
 }
 
-void Server::removeChannel(std::string name)
+void	Server::removeChannel(std::string name)
 {
 	for (size_t i = 0; i < this->channels.size(); i++)
 	{

@@ -87,14 +87,16 @@ class Server
 		void	CheckExistingChannelsAndClients(std::vector<std::string> &tmp, int fd);
 		
 		
-		// MODE cmd
-		// void		MODE(std::string& cmd, int fd);
+		// MODE CMD
 		void		MODE(std::vector<std::string> tokens, int fd);
 		bool 		password_mode(std::string token, Channel *channel, char opera, int fd);
 		bool 		operator_mode(std::string token, Channel *channel, int fd, char opera);
 		bool		limit_mode(std::string token,  Channel *channel, char opera, int fd);
 		void		topic_restriction_mode(Channel *channel , char opera);
 		
+
+		// PART CMD
+		void		PART(std::vector<std::string> tokens, int fd);
 		
 		// QUIT CMD
 };
