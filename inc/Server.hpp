@@ -82,7 +82,6 @@ class Server
 		void 	channelExist(std::vector<std::pair<std::string, std::string> >&token, int i, int j, int fd);
 		
 		// PRIVMSG CMD
-		//void 	PRIVMSG(std::vector<std::string> tokens, int fd);
 		void	PRIVMSG(std::string cmd, int fd);
 		void	CheckExistingChannelsAndClients(std::vector<std::string> &tmp, int fd);
 		
@@ -98,6 +97,11 @@ class Server
 		// PART CMD
 		void		PART(std::vector<std::string> tokens, int fd);
 		
+
+		// KICK CMD
+		void		KICK(std::vector<std::string> tokens, int fd);
+
+
 		// QUIT CMD
 };
 

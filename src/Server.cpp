@@ -277,7 +277,7 @@ void Server::execCmd(std::string &cmd, int fd)
 
 			if (tokens[0] == "KICK" || tokens[0] == "kick")
 			{
-				//KICK(cmd, fd);
+				KICK(tokens, fd);
 
 			}
 			else if (tokens[0] == "JOIN" || tokens[0] == "join")

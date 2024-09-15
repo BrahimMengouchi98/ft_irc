@@ -1,6 +1,5 @@
 #include "../inc/Server.hpp"
 
-
 void	splitChannels(std::vector<std::string> &token, std::string tokens)
 {
 	std::string buff;
