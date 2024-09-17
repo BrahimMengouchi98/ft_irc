@@ -288,7 +288,7 @@ void Server::execCmd(std::string &cmd, int fd)
 			}
 			else if (tokens[0] == "TOPIC" || tokens[0] == "topic")
 			{
-				//Topic(cmd, fd);
+				TOPIC(tokens, fd);
 
 			}
 			else if (tokens[0] == "MODE" || tokens[0] == "mode")
@@ -309,7 +309,7 @@ void Server::execCmd(std::string &cmd, int fd)
 			else if (tokens[0] == "INVITE" || tokens[0] == "invite")
 			{
 				std::cout << "invite\n";
-				//Invite(cmd,fd);
+				INVITE(tokens,fd);
 
 			}
 			else
@@ -330,7 +330,7 @@ void Server::ClearClients(int fd)
 	{ 
 		if (fds[i].fd == fd)
 		{
-			fds.erase(fds.begin() + i); 
+			fds.erase(fds.begin() + i);
 			break;
 		}
 	}

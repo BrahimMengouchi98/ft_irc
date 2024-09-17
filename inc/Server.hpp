@@ -93,15 +93,18 @@ class Server
 		bool		limit_mode(std::string token,  Channel *channel, char opera, int fd);
 		void		topic_restriction_mode(Channel *channel , char opera);
 		
-
 		// PART CMD
 		void		PART(std::vector<std::string> tokens, int fd);
 		
-
 		// KICK CMD
 		void		KICK(std::vector<std::string> tokens, int fd);
 
+		// TOPIC CMD
+		void		TOPIC(std::vector<std::string> tokens, int fd);
 
+		// INVITE CMD
+		void		INVITE(std::vector<std::string> tokens, int fd);
+		
 		// QUIT CMD
 };
 

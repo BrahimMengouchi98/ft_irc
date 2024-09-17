@@ -14,7 +14,7 @@ class Channel
 		int limit;
 		bool topic_restriction;
 		std::string name;
-		//std::string time_creation;
+		std::string time_creation;
 		std::string password;
 		std::string created_at;
 		std::string topic_name;
@@ -38,7 +38,7 @@ class Channel
 	void setName(std::string name);
 	void setCreateAt();
 	void setModeAtIndex(size_t index, bool mode);
-	//void setTime(std::string time);
+	void setTime();
 	void setTopicRestriction(bool value);
 
 
@@ -51,10 +51,12 @@ class Channel
 
 	bool getModeAtIndex(size_t index);
 	bool isClientInChannel(std::string &nickname);
+	bool getTopicRestriction();
 
-	std::string getTopicName();
+	std::string getTopicname();
 	std::string getPassword();
 	std::string getName();
+	std::string getTime();
 	std::string getCreationAt();
 	std::string getClientsInChannel();
 	std::string getModes();
@@ -63,6 +65,7 @@ class Channel
 	Client *getAdmin(int fd);
 
 	Client* getClientInChannel(std::string nickname);
+	
 	//---------------//Methods
 	void addClient(Client newClient);
 	void addAdmin(Client newClient);

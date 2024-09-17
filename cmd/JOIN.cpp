@@ -166,13 +166,13 @@ void Server::channelExist(std::vector<std::pair<std::string, std::string> >&toke
 	//add the client to the channel
 	Client *cli = getClient(fd);
 	this->channels[j].addClient(*cli);
-	if(channels[j].getTopicName().empty())
+	if(channels[j].getTopicname().empty())
 		sendResponse(RPL_JOINMSG(getClient(fd)->getHostname(),getClient(fd)->getIpAdd(),token[i].first) + \
 			RPL_NAMREPLY(getClient(fd)->getNickname(),channels[j].getName(),channels[j].getClientsInChannel()) + \
 			RPL_ENDOFNAMES(getClient(fd)->getNickname(),channels[j].getName()),fd);
 	else
 		sendResponse(RPL_JOINMSG(getClient(fd)->getHostname(),getClient(fd)->getIpAdd(),token[i].first) + \
-			RPL_TOPICIS(getClient(fd)->getNickname(),channels[j].getName(),channels[j].getTopicName()) + \
+			RPL_TOPICIS(getClient(fd)->getNickname(),channels[j].getName(),channels[j].getTopicname()) + \
 			RPL_NAMREPLY(getClient(fd)->getNickname(),channels[j].getName(),channels[j].getClientsInChannel()) + \
 			RPL_ENDOFNAMES(getClient(fd)->getNickname(),channels[j].getName()),fd);
     channels[j].sendToAll(RPL_JOINMSG(getClient(fd)->getHostname(), getClient(fd)->getIpAdd(),token[i].first), fd);

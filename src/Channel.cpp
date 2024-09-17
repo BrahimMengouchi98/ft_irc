@@ -87,6 +87,15 @@ void Channel::setModeAtIndex(size_t index, bool mode)
 	modes[index].second = mode;
 }
 
+void Channel::setTime()
+{
+	std::time_t current = std::time(NULL);
+	std::stringstream res;
+
+	res << current;
+	this->time_creation = std::string(res.str());
+}
+
 void Channel::setTopicRestriction(bool value)
 {
 	this->topic_restriction = value;
@@ -141,9 +150,14 @@ int Channel::getClientsNumber()
 	return this->clients.size() + this->admins.size();
 }
 
-std::string Channel::getTopicName() 
+std::string Channel::getTopicname() 
 {
 	return this->topic_name;
+}
+
+bool Channel::getTopicRestriction() 
+{
+	return this->topic_restriction;
 }
 
 std::string Channel::getPassword()
@@ -154,6 +168,11 @@ std::string Channel::getPassword()
 std::string Channel::getName() 
 {
 	return this->name;
+}
+
+std::string Channel::getTime()
+{
+	return this->time_creation;
 }
 
 std::string Channel::getCreationAt()

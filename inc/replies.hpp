@@ -2,6 +2,8 @@
 
 #define CRLF "\r\n"
 
+#define RPL_INVITING(nickname1, nickname2, channelname) (": 341 "+ nickname1 + " "+ nickname2 + " #" + channelname + CRLF)
+
 #define RPL_KEYREMOVED(channel) (": MODE " + channel + " -k : Password has been removed from the channel!" + CRLF)
 
 #define RPL_CONNECTED(nickname) (": 001 " + nickname + " : Welcome to the IRC server!" + CRLF)
