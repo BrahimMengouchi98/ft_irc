@@ -2,9 +2,15 @@
 
 bool Server::Signal = false; //-> initialize the static boolean
 
+bool Server::isPortValid(std::string port)
+{
+	return (port.find_first_not_of("0123456789") == std::string::npos && \
+	std::atoi(port.c_str()) >= 1024 && std::atoi(port.c_str()) <= 65535);
+}
+
 Server::Server() {server_fdsocket = -1;}
 
-Server::~Server(){}
+Server::~Server() {}
 
 Server::Server(Server const &src){*this = src;}
 
@@ -271,6 +277,7 @@ void Server::execCmd(std::string &cmd, int fd)
 		{
 			// quit
 			std::cout << "quit\n";
+			QUIT(tokens, fd);
 		}
 		else if (isRegistered(fd))
 		{
@@ -404,6 +411,35 @@ void Server::removeFd(int fd)
 		{
 			this->fds.erase(this->fds.begin() + i); 
 			return;
+		}
+	}
+}
+
+void	Server::removeChannels(int fd)
+{
+	for (size_t i = 0; i < this->channels.size(); i++)
+	{
+		int flag = 0;
+		if (channels[i].getClient(fd))
+		{
+			channels[i].removeClient(fd); 
+			flag = 1;
+		}
+		else if (channels[i].getAdmin(fd))
+		{
+			channels[i].removeAdmin(fd); 
+			flag = 1;
+		}
+		if (channels[i].getClientsNumber() == 0)
+		{
+			channels.erase(channels.begin() + i); 
+			i--; 
+			continue;
+		}
+		if (flag)
+		{
+			std::string rpl = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost QUIT Quit\r\n";
+			channels[i].sendToAll(rpl);
 		}
 	}
 }

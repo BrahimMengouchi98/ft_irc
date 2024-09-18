@@ -106,6 +106,10 @@ class Server
 		void		INVITE(std::vector<std::string> tokens, int fd);
 		
 		// QUIT CMD
+		void		QUIT(std::vector<std::string> tokens, int fd);
+
+		// check if porft valid
+		bool isPortValid(std::string port);
 };
 
 #endif
