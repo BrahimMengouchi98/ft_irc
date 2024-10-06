@@ -1,12 +1,11 @@
 # include "../inc/Server.hpp"
 
 // QUIT CMD
-void		Server::QUIT(std::vector<std::string> tokens, int fd)
+void	Server::QUIT(std::vector<std::string> tokens, int fd)
 {
 	std::string reason;
-
-	reason = tokens[2];
-
+	if (tokens.size() > 1)
+		reason = tokens[1];
 	for (size_t i = 0; i < channels.size(); i++)
 	{
 		if (channels[i].getClient(fd))

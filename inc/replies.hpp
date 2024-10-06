@@ -14,7 +14,6 @@
 #define RPL_NICKCHANGE(oldnickname, nickname) (":" + oldnickname + " NICK " + nickname + CRLF)
 #define RPL_JOINMSG(hostname, ipaddress, channelname) (":" + hostname + "@" + ipaddress + " JOIN #" + channelname + CRLF)
 #define RPL_NAMREPLY(nickname, channelname, clientslist) (": 353 " + nickname + " @ #" + channelname + " :" + clientslist + CRLF)
-#define RPL_ENDOFNAMES(nickname, channelname) (": 366 " + nickname + " #" + channelname + " :END of /NAMES list" + CRLF)
 #define RPL_TOPICIS(nickname, channelname, topic) (": 332 " + nickname + " #" +channelname + " :" + topic + "\r\n")
 
 ///////// ERRORS ////////////////
@@ -30,8 +29,20 @@
 #define ERR_ALREADYREGISTERED(nickname) (": 462 " + nickname + " :You have already registered !" + CRLF )
 #define ERR_NONICKNAME(nickname) (": 431 " + nickname + " :No nickname given" + CRLF )
 #define ERR_NICKINUSE(nickname) (": 433 " + nickname + " :Nickname is already in use" + CRLF)
-#define ERR_ERRONEUSNICK(nickname) (": 432 " + nickname + " :Erroneus nickname" + CRLF)
+#define ERR_NONVALIDNICK(nickname) (": 432 " + nickname + " :Non valid nickname" + CRLF)
 #define ERR_NOTREGISTERED(nickname) (": 451 " + nickname + " :You have not registered!" + CRLF)
 #define ERR_CMDNOTFOUND(nickname, command) (": 421 " + nickname + " " + command + " :Unknown command" + CRLF)
 
 #define ERR_NORECIPIENT(nickname) (": 411 " + nickname + " :No recipient given (PRIVMSG)" + CRLF)
+
+#define ERR_NEEDMOREPARAMS(nickname) (": 461 " + nickname + " :Not enough parameters" + CRLF)
+
+#define ERR_NOSUCHCHANNEL(channel) (": 403 #" + channel + " :No such channel" + CRLF)
+
+#define ERR_NOTONCHANNEL(nick, channel) (": 442 " + nick + " #" + channel + " :You're not on that channel" + CRLF)
+
+#define ERR_USERONCHANNEL(nick, channel) (": 443 " + nick + " #" + channel + " :is already on channel" + CRLF)
+
+#define ERR_INVITEONLYCHAN(nick, channel) (": 482 " + nick + " #" + channel + " :You're not channel operator" + CRLF)
+
+#define ERR_CHANNELISFULL(nick, channel) (": 473 " + nick + " #" + channel + " :Cannot invit to channel (+i)" + CRLF)

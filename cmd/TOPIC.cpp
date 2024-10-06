@@ -60,7 +60,7 @@ void		Server::TOPIC(std::vector<std::string> tokens, int fd)
 			sendResponse(RPL_TOPICIS(getClient(fd)->getNickname(), channelName, getChannel(channelName)->getTopicname()), fd);
 			// RPL_TOPICWHOTIME (333) if the topic is set
 			sendResponse(": 333 " + getClient(fd)->getNickname() + " " + "#" + channelName + " " + getClient(fd)->getNickname() + " " + getChannel(channelName)->getTime() + "\r\n", fd);
-			return;
+			return;	
 		}
 	}
 	// end see topic name

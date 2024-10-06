@@ -8,7 +8,6 @@ void Server::clientAuth(int fd, std::string cmd)
 	size_t pos = cmd.find_first_not_of("\t\v ");
 	if(pos < cmd.size())
 		cmd = cmd.substr(pos);
-
 	if(pos == std::string::npos || cmd.empty())
 	{
 		sendResponse(ERR_NOTENOUGHPARAM(std::string("*")), fd);
@@ -30,8 +29,8 @@ void Server::clientAuth(int fd, std::string cmd)
 /* NICK COMMAND */
 bool Server::isValidNickname(std::string& nickname)
 {
-		
-	if(!nickname.empty() && (nickname[0] == '&' || nickname[0] == '#' || nickname[0] == ':'))
+	if(!nickname.empty() && (nickname[0] == '&' 
+		|| nickname[0] == '#' || nickname[0] == ':'))
 		return false;
 	for(size_t i = 1; i < nickname.size(); i++)
 	{
@@ -53,7 +52,6 @@ bool Server::isNicknameInUse(std::string& nickname)
 
 void Server::setNickname(std::string cmd, int fd)
 {
-	
 	std::string inuse;
 	cmd = cmd.substr(4);
 	size_t pos = cmd.find_first_not_of("\t\v ");
@@ -62,8 +60,7 @@ void Server::setNickname(std::string cmd, int fd)
 	Client *cli = getClient(fd);
 	if(pos == std::string::npos || cmd.empty())
 	{
-		sendResponse(ERR_NOTENOUGHPARAM(std::string("*")), fd); 
-		
+		sendResponse(ERR_NOTENOUGHPARAM(std::string("*")), fd);
 		return;
 	}
 	if (isNicknameInUse(cmd) && cli->getNickname() != cmd)
@@ -76,7 +73,7 @@ void Server::setNickname(std::string cmd, int fd)
 	}
 	if(!isValidNickname(cmd)) 
 	{
-		sendResponse(ERR_ERRONEUSNICK(std::string(cmd)), fd);
+		sendResponse(ERR_NONVALIDNICK(std::string(cmd)), fd);
 		return;
 	}
 	else
@@ -127,11 +124,13 @@ void	Server::setUsername(std::string& cmd, int fd)
 	}
 	else if (cli && !cli->getUsername().empty())
 	{
-		sendResponse(ERR_ALREADYREGISTERED(cli->getNickname()), fd); 		return;
+		sendResponse(ERR_ALREADYREGISTERED(cli->getNickname()), fd); 		
+		return;
 	}
 	else
 		cli->setUsername(tokens[1]);
-	if(cli && cli->getIsRegistered() && !cli->getUsername().empty() && !cli->getNickname().empty() && cli->getNickname() != "*"  && !cli->getIsLogedIn())
+	if(cli && cli->getIsRegistered() && !cli->getUsername().empty() && !cli->getNickname().empty() 
+		&& cli->getNickname() != "*"  && !cli->getIsLogedIn())
 	{
 		cli->setIsLogedin(true);
 		sendResponse(RPL_CONNECTED(cli->getNickname()), fd);

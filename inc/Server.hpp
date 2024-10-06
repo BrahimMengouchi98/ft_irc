@@ -12,7 +12,7 @@ class Server
 		int port; //-> server port
 		std::string pwd;
 		int server_fdsocket; //-> server socket file descriptor
-		static bool Signal; //-> static boolean for signal
+		static bool signal; //-> static boolean for signal
 		std::vector<Client> clients; //-> vector of clients
 		std::vector<Channel> channels; //-> vector of channels
 		std::vector<struct pollfd> fds; //-> vector of pollfd
@@ -42,9 +42,9 @@ class Server
 
 		// Server Methods
 		void init(int port, std::string pwd); //-> server initialization
-		void SerSocket(); //-> server socket creation
-		void AcceptNewClient(); //-> accept new client
-		void ReceiveNewData(int fd); //-> receive new data from a registered client
+		void createSocket(); //-> server socket creation
+		void acceptNewClient(); //-> accept new client
+		void receiveNewData(int fd); //-> receive new data from a registered client
 
 		//---------------//remove Methods
 		void removeClient(int fd);
@@ -53,10 +53,10 @@ class Server
 		void removeChannels(int fd);
 
 		//-> signal handler
-		static void SignalHandler(int signum); 
+		static void signalHandler(int signum); 
 	
-		void CloseFds(); //-> close file descriptors
-		void ClearClients(int fd); //-> clear clients
+		void closeFds(); //-> close file descriptors
+		void clearClients(int fd); //-> clear clients
 
 		// for extracting data from client
 		std::vector<std::string> 	splitBuffer(std::string str);
@@ -73,7 +73,8 @@ class Server
 		void sendResponse(std::string response, int fd);
 		void sendError(int code, std::string clientname, int fd, std::string msg);
 		void sendError(int code, std::string clientname, std::string channelname, int fd, std::string msg);
-		
+		//void sendError(std::string msg, int fd);
+
 		// JOIN CMD
 		void 	JOIN(std::vector<std::string> tokens, int fd);
 		int  	fillJoin(std::vector<std::pair<std::string, std::string> > &token, std::vector<std::string> tokens, int fd);
@@ -108,8 +109,8 @@ class Server
 		// QUIT CMD
 		void		QUIT(std::vector<std::string> tokens, int fd);
 
-		// check if porft valid
-		bool isPortValid(std::string port);
+		// check if port valid
+		bool 		isPortValid(std::string port);
 };
 
 #endif

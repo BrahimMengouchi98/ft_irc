@@ -39,7 +39,7 @@ Channel &Channel::operator=(Channel const &src)
 }
 
 //---------------//Setters
-void Channel::setInvitOnly(int invit_only) 
+void Channel::setInvitOnly(int invit_only)
 {	
 	this->invit_only = invit_only;
 }

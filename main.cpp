@@ -11,8 +11,8 @@ int main(int ac, char **av)
 	}
 	try
 	{
-		signal(SIGINT, Server::SignalHandler); //-> catch the signal (ctrl + c)
-		signal(SIGQUIT, Server::SignalHandler); //-> catch the signal (ctrl + \)
+		signal(SIGINT, Server::signalHandler); //-> catch the signal (ctrl + c)
+		signal(SIGQUIT, Server::signalHandler); //-> catch the signal (ctrl + \)
 		if(!ser.isPortValid(av[1]) || !*av[2] || std::strlen(av[2]) > 20)
 		{
 			std::cout << "invalid Port number / Password!" << std::endl; 
@@ -22,7 +22,7 @@ int main(int ac, char **av)
 	}
 	catch(const std::exception& e)
 	{
-		ser.CloseFds(); //-> close the file descriptors
+		ser.closeFds(); //-> close the file descriptors
 		std::cerr << e.what() << std::endl;
 	}
 	std::cout << "The Server Closed!" << std::endl;
