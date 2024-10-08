@@ -11,8 +11,8 @@ int main(int ac, char **av)
 	}
 	try
 	{
-		signal(SIGINT, Server::signalHandler); //-> catch the signal (ctrl + c)
-		signal(SIGQUIT, Server::signalHandler); //-> catch the signal (ctrl + \)
+		//-> catch the signal (ctrl + c)
+		signal(SIGINT, Server::signalHandler); 
 		if(!ser.isPortValid(av[1]) || !*av[2] || std::strlen(av[2]) > 20)
 		{
 			std::cout << "invalid Port number / Password!" << std::endl; 

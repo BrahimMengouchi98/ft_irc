@@ -53,7 +53,7 @@ class Server
 		void removeChannels(int fd);
 
 		//-> signal handler
-		static void signalHandler(int signum); 
+		static void signalHandler(int signum);	
 	
 		void closeFds(); //-> close file descriptors
 		void clearClients(int fd); //-> clear clients

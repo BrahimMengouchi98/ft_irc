@@ -88,7 +88,7 @@ void Server::setNickname(std::string cmd, int fd)
 				{
 					cli->setIsLogedin(true);
 					sendResponse(RPL_CONNECTED(cli->getNickname()), fd);
-					sendResponse(RPL_NICKCHANGE(cli->getNickname(),cmd), fd);
+					sendResponse(RPL_NICKCHANGE(cli->getNickname(), cmd), fd);
 				}
 				else
 					sendResponse(RPL_NICKCHANGE(oldnick,cmd), fd);

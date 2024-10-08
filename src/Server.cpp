@@ -1,6 +1,12 @@
 # include "../inc/Server.hpp"
 
 bool Server::signal = false; //-> initialize the static boolean
+void Server::signalHandler(int signum)
+{
+	(void)signum;
+	std::cout << std::endl << "Signal Received!" << std::endl;
+	Server::signal = true; //-> set the static boolean to true to stop the server
+}
 
 bool Server::isPortValid(std::string port)
 {
@@ -61,13 +67,6 @@ Channel *Server::getChannel(std::string name)
 			return &channels[i];
 	}
 	return NULL;
-}
-
-void Server::signalHandler(int signum)
-{
-	(void)signum;
-	std::cout << std::endl << "Signal Received!" << std::endl;
-	Server::signal = true; //-> set the static boolean to true to stop the server
 }
 
 void Server::closeFds()
@@ -180,31 +179,30 @@ void Server::receiveNewData(int fd)
 	if(bytes <= 0)
 	{ 
 		std::cout << RED << "Client <" << fd << "> Disconnected" << WHI << std::endl;
-		clearClients(fd); //-> clear the client
+		removeChannels(fd);
+		removeClient(fd);
+		removeFd(fd);
 		close(fd); //-> close the client socket
 	}
-
 	else
-	{ //-> print the received data
+	{ 
+		//-> print the received data
 		buff[bytes] = '\0';
 		client->setBuffer(buff);
 
+		if(client->getBuffer().find_first_of("\r\n") == std::string::npos)
+			return;
 		// split buffer line by line
 		cmd = splitBuffer(client->getBuffer());
-		//std::cout << this->server_fdsocket << " : " << fd << "\n";
 		for(size_t i = 0; i < cmd.size(); i++)
 		{
 			execCmd(cmd[i], fd);
 			//std::cout << cmd[i] << "\n";
 			std::cout << "------------------\n";
 			//std::cout << "line: " << cmd[i] << "\n";
-			
 		}
 		if(getClient(fd))
 			getClient(fd)->clearBuffer();
-		//std::cout << "bytes: " << bytes << "\n";
-		//std::cout << YEL << "Client <" << fd << "> Data: " << WHI << buff;
-		//here you can add your code to process the received data: parse, check, authenticate, handle the command, etc...
 	}
 }
 // split buffer by \r\n
