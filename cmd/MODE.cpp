@@ -157,9 +157,8 @@ void	Server::MODE(std::vector<std::string> tokens, int fd)
 	// {
 	// 	std::cout << "token: " << tokens[i] << "\n";
 	// }
-	
 	Client *cli = getClient(fd);
-	if (tokens.size() < 2)
+	if (tokens.size() < 3)
 	{
 		sendResponse(ERR_NOTENOUGHPARAM(cli->getNickname()), fd); 
 		return ;

@@ -4,10 +4,6 @@
 void		Server::TOPIC(std::vector<std::string> tokens, int fd)
 {
 	std::string channelName, topic;
-	for (size_t i = 0; i < tokens.size(); i++)
-	{
-		std::cout << "tokens: " << tokens[i] << "\n";
-	}
 
 	// // ERR_NEEDMOREPARAMS (461) // if the channel name is empty
 	if (tokens.size() < 2)
@@ -46,7 +42,6 @@ void		Server::TOPIC(std::vector<std::string> tokens, int fd)
 	// see topic name
 	if (tokens.size() == 2)
 	{
-		std::cout << "topic s2: " << getChannel(channelName)->getTopicname() << "\n";
 		// RPL_NOTOPIC (331) if no topic is set
 		if (getChannel(channelName)->getTopicname() == "")
 		{
@@ -55,7 +50,6 @@ void		Server::TOPIC(std::vector<std::string> tokens, int fd)
 		}
 		else
 		{
-			std::cout << "hello\n";
 			// RPL_TOPIC (332) if the topic is set
 			sendResponse(RPL_TOPICIS(getClient(fd)->getNickname(), channelName, getChannel(channelName)->getTopicname()), fd);
 			// RPL_TOPICWHOTIME (333) if the topic is set
@@ -85,7 +79,6 @@ void		Server::TOPIC(std::vector<std::string> tokens, int fd)
 	{
 		getChannel(channelName)->setTime();
 		getChannel(channelName)->setTopicName(topic);
-		std::cout << "topic s3: " << getChannel(channelName)->getTopicname() << "\n";
 		std::string rpl;
 		// RPL_TOPIC (332) if the topic is set
 		rpl = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getUsername() + "@localhost TOPIC #" + channelName + " :" + getChannel(channelName)->getTopicname() + "\r\n";

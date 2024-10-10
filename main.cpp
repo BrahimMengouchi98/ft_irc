@@ -11,7 +11,6 @@ int main(int ac, char **av)
 	}
 	try
 	{
-		//-> catch the signal (ctrl + c)
 		signal(SIGINT, Server::signalHandler); 
 		if(!ser.isPortValid(av[1]) || !*av[2] || std::strlen(av[2]) > 20)
 		{

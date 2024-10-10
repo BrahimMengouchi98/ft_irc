@@ -195,12 +195,7 @@ void Server::receiveNewData(int fd)
 		// split buffer line by line
 		cmd = splitBuffer(client->getBuffer());
 		for(size_t i = 0; i < cmd.size(); i++)
-		{
 			execCmd(cmd[i], fd);
-			//std::cout << cmd[i] << "\n";
-			std::cout << "------------------\n";
-			//std::cout << "line: " << cmd[i] << "\n";
-		}
 		if(getClient(fd))
 			getClient(fd)->clearBuffer();
 	}
@@ -252,81 +247,36 @@ void Server::execCmd(std::string &cmd, int fd)
 		cmd = cmd.substr(found);
 	if (tokens.size())
 	{
-		std::cout << "token: " << tokens[0] << "\n";
 		if (tokens[0] == "PASS" || tokens[0] == "pass")
-		{ 
-			std::cout << "pass\n";
-			// authenticate user
 			clientAuth(fd, cmd);
-		}
 		else if (tokens[0] == "NICK" || tokens[0] == "nick")
-		{
-			// set a nickname
 			setNickname(cmd, fd);
-			//std::cout << "nickname: " << getClient(fd)->getNickname();
-			//std::cout << "nick\n";
-		}
 		else if(tokens[0] == "USER" || tokens[0] == "user")
-		{
-			// set username
-			//std::cout << "user\n";
 			setUsername(cmd, fd);
-		}
 		else if (tokens[0] == "QUIT" || tokens[0] == "quit")
-		{
-			// quit
-			std::cout << "quit\n";
 			QUIT(tokens, fd);
-		}
 		else if (isRegistered(fd))
 		{
-
 			if (tokens[0] == "KICK" || tokens[0] == "kick")
-			{
 				KICK(tokens, fd);
-
-			}
 			else if (tokens[0] == "JOIN" || tokens[0] == "join")
-			{
 				JOIN(tokens, fd);
-				//std::cout << "join\n";
-
-			}
 			else if (tokens[0] == "TOPIC" || tokens[0] == "topic")
-			{
 				TOPIC(tokens, fd);
-
-			}
 			else if (tokens[0] == "MODE" || tokens[0] == "mode")
-			{
-				// MODE(cmd, fd);
 				MODE(tokens, fd);
-			}
 			else if (tokens[0] == "PART" || tokens[0] == "part")
-			{
 				PART(tokens, fd);
-			}
 			else if (tokens[0] == "PRIVMSG" || tokens[0] == "privmsg")
-			{
-				std::cout << "privmsg!!\n";
 				PRIVMSG(cmd, fd);
-
-			}
 			else if (tokens[0] == "INVITE" || tokens[0] == "invite")
-			{
-				std::cout << "invite\n";
 				INVITE(tokens,fd);
-
-			}
 			else
 				sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickname(), tokens[0]), fd);
 		}
 		else if (!isRegistered(fd))
 			sendResponse(ERR_NOTREGISTERED(getClient(fd)->getNickname()), fd);
 	}
-		//std::cout << "registered !!\n";
-	// for(size_t i = 0; i < tokens.size(); ++i)
-	// 	std::cout << "token: " << tokens[i] << "\n";
 }
 //-> clear the clients
 void Server::clearClients(int fd)

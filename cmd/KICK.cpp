@@ -3,7 +3,6 @@
 void	splitParamsByComma(std::vector<std::string> &token, std::string tokens)
 {
 	std::string buff;
-	std::cout << "from func: " << tokens << "\n";
 	for (size_t i = 0; i < tokens.size(); i++)
 	{
 		if (tokens[i] == ',')
@@ -27,12 +26,6 @@ void	Server::KICK(std::vector<std::string> tokens, int fd)
     std::vector<std::string> channelsName;
     std::vector<std::string> usersName;
 
-	for (size_t i = 0; i < tokens.size(); i++)
-	{
-		std::cout << "tokens: " << tokens[i] << "\n";
-	}
-	
-	
 	// // ERR_NEEDMOREPARAMS (461) // if the channel name is empty
 	if (tokens.size() < 3)
 	{

@@ -65,7 +65,6 @@ std::string SplitCmdPrivmsg(std::string cmd, std::vector<std::string> &tmp)
 
 void	Server::CheckExistingChannelsAndClients(std::vector<std::string> &tmp, int fd)
 {
-	std::cout << "channel name: " << tmp[0] << "\n";
 	for(size_t i = 0; i < tmp.size(); i++)
 	{
 		if (tmp[i][0] == '#')
@@ -74,7 +73,6 @@ void	Server::CheckExistingChannelsAndClients(std::vector<std::string> &tmp, int 
 			//ERR_NOSUCHNICK (401) // if the channel doesn't exist
 			if(!getChannel(tmp[i]))
 			{
-				std::cout << "channel not found \n";
 				sendResponse(ERR_CHANNELNOTFOUND(getClient(fd)->getNickname(), tmp[i]), fd);
 				// sendError(401, "#" + tmp[i], getClient(fd)->getFd(), " :No such nick/channel\r\n"); 
 				tmp.erase(tmp.begin() + i); 
@@ -102,26 +100,26 @@ void	Server::CheckExistingChannelsAndClients(std::vector<std::string> &tmp, int 
 		}
 	}
 }
-
+// privmsg #ch1 :hello
+// privmsg user :hello
 void 	Server::PRIVMSG(std::string cmd, int fd)
 {
 	std::vector<std::string> tmp;
 	std::string message = SplitCmdPrivmsg(cmd, tmp);
-	for (int i = 0; i < tmp.size(); i++)
-	{
-		std::cout << "aa: " << tmp[i] << "\n";
-	}
-	std::cout << "msg: " << message << "\n";
+
 	// if the client doesn't specify the recipient
 	if (!tmp.size())//ERR_NORECIPIENT (411) 
 	{
-		std::cout << "size = 0\n";
-		sendError(411, getClient(fd)->getNickname(), getClient(fd)->getFd(), " :No recipient given (PRIVMSG)\r\n"); 
-		//sendResponse(ERR_NORECIPIENT(getClient(fd)->getNickname()), fd);
+		//sendError(411, getClient(fd)->getNickname(), getClient(fd)->getFd(), " :No recipient given (PRIVMSG)\r\n"); 
+		sendResponse(ERR_NORECIPIENT(getClient(fd)->getNickname()), fd);
 		return;
 	}
-	// if (message.empty())//ERR_NOTEXTTOSEND (412) // if the client doesn't specify the message
-	// 	{senderror(412, getClient(fd)->getNickname(), getClient(fd)->getFd(), " :No text to send\r\n"); return;}
+	//ERR_NOTEXTTOSEND (412) // if the client doesn't specify the message
+	if (message.empty())
+	{
+		sendError(412, getClient(fd)->getNickname(), getClient(fd)->getFd(), " :No text to send\r\n"); 
+		return;
+	}
 	// if (tmp.size() > 10) //ERR_TOOMANYTARGETS (407) // if the client send the message to more than 10 clients
 	// 	{senderror(407, getClient(fd)->getNickname(), getClient(fd)->getFd(), " :Too many recipients\r\n"); return;}
 	

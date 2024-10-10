@@ -7,15 +7,11 @@ int Server::fillJoin(std::vector<std::pair<std::string, std::string> > &token, s
 
 	if (tokens.size() < 2)
 	{
-		std::cout << "number of arg not enough !!\n";
+		sendResponse(ERR_NEEDMOREPARAMS(getClient(fd)->getNickname()), fd);
 		return 0;
 	}
 	for (int i = 1; i < tokens.size(); i++)
 		tmp.push_back(tokens[i]);
-	// for (int i = 0; i < tmp.size(); i++)
-	// {
-	// 	std::cout << tmp[i] << "\n";
-	// }
 	ch = tmp[0]; 
 	tmp.erase(tmp.begin());
 	// check if their is passwords ?
@@ -51,15 +47,13 @@ int Server::fillJoin(std::vector<std::pair<std::string, std::string> > &token, s
 		}
 		// make sure that passwords equals to their channel not exceed it
 		if (j < token.size())
-		token[j].second =  buff;
+			token[j].second =  buff;
 	}
 	
 	for (size_t i = 0; i < token.size(); i++) 
 	{
 		std::string channel = token[i].first;
 		std::string password = token[i].second;
-
-   		std::cout << "Channel: " << channel << "<> Password: " << password << std::endl;
 	}
 	//erase the empty channel names
 	for (size_t i = 0; i < token.size(); i++)
@@ -67,14 +61,14 @@ int Server::fillJoin(std::vector<std::pair<std::string, std::string> > &token, s
 		if (token[i].first.empty())
 			token.erase(token.begin() + i--);
 	}
-	//ERR_NOSUCHCHANNEL (403) // if the channel doesn't exist
+    // if the channel doesn't exist
 	for (size_t i = 0; i < token.size(); i++)
 	{
 		if (token[i].first.begin()[0] != '#')
 		{
+			sendResponse(ERR_NOSUCHCHANNEL(token[i].first), fd);
 			//sendError(403, GetClient(fd)->getNickname(), token[i].first, GetClient(fd)->GetFd(), " :No such channel\r\n"); 
-			//token.erase(token.begin() + i--);
-			std::cout << "channel name must start with #\n";
+			token.erase(token.begin() + i--);
 		}
 		else
 			token[i].first.erase(token[i].first.begin());
@@ -176,17 +170,12 @@ void Server::channelExist(std::vector<std::pair<std::string, std::string> >&toke
 }
 
 // JOIN #ch1,#ch2,#ch3 k1,k2,k3
-
 void Server::JOIN(std::vector<std::string> tokens, int fd)
 {
 	std::vector<std::pair<std::string, std::string> > token;
-	
 	// check if the channel name is empty
 	if (!fillJoin(token, tokens, fd))
-	{
-		std::cout << "not enough params !!\n";
 		return ;
-	}
 	for (size_t i = 0; i < token.size(); i++)
 	{
 		bool flag = false;
@@ -194,23 +183,12 @@ void Server::JOIN(std::vector<std::string> tokens, int fd)
 		{
 			if (this->channels[j].getName() == token[i].first)
 			{
-				std::cout << "channel exist !!\n";
 				channelExist(token, i, j, fd);
 				flag = true; 
 				break;
 			}
 		}
 		if (!flag)
-		{
-			std::cout << "channel not exist !!\n";
-			//NotExistCh(token, i, fd);
 			channelNotExist(token, i, fd);
-		}
 	}
-	// for (int i = 0; i < tokens.size(); i++)
-	// {
-	// 	std::cout << tokens[i] << "\n";
-	// }
-	// std::cout << "size: " << cmd.size()<< "\n";
-	// std::cout << "cmd from join: " << cmd << "\n";
 }

@@ -11,7 +11,7 @@ void Server::clientAuth(int fd, std::string cmd)
 	if(pos == std::string::npos || cmd.empty())
 	{
 		sendResponse(ERR_NOTENOUGHPARAM(std::string("*")), fd);
-		return;
+		return;	
 	}
 	else if(!cli->getIsRegistered())
 	{
@@ -94,7 +94,6 @@ void Server::setNickname(std::string cmd, int fd)
 					sendResponse(RPL_NICKCHANGE(oldnick,cmd), fd);
 				return;
 			}
-			
 		}
 		else if (cli && !cli->getIsRegistered())
 			sendResponse(ERR_NOTREGISTERED(cmd), fd);

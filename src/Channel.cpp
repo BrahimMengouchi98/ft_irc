@@ -246,7 +246,6 @@ std::string Channel::getModes()
 	}
 	if(!mode.empty())
 		mode.insert(mode.begin(),'+');
-	std::cout << "mode: " << mode << "\n";
 	return mode;
 }
 
@@ -329,7 +328,7 @@ void Channel::sendToAll(std::string rpl1)
 		if(send(admins[i].getFd(), rpl1.c_str(), rpl1.size(), 0) == -1)
 			std::cerr << "send() faild" << std::endl;
 	for(size_t i = 0; i < clients.size(); i++)
-		if(send(clients[i].getFd(), rpl1.c_str(), rpl1.size(),0) == -1)
+		if(send(clients[i].getFd(), rpl1.c_str(), rpl1.size(), 0) == -1)
 			std::cerr << "send() faild" << std::endl;
 }
 

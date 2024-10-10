@@ -4,10 +4,6 @@
 void	Server::INVITE(std::vector<std::string> tokens, int fd)
 {
 	std::string channelName, nickName;
-	for (size_t i = 0; i < tokens.size(); i++)
-	{
-		std::cout << "tokens: " << tokens[i] << "\n";
-	}
 
 	// if the channel name is empty
 	if (tokens.size() < 3)
@@ -20,7 +16,6 @@ void	Server::INVITE(std::vector<std::string> tokens, int fd)
 	channelName = tokens[2];
 	if (channelName[0] == '#')
 		channelName = channelName.substr(1);
-	
 	// if the given channel does not exist
 	if (!getChannel(channelName))
 	{

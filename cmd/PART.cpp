@@ -3,7 +3,6 @@
 void	splitChannels(std::vector<std::string> &token, std::string tokens)
 {
 	std::string buff;
-	std::cout << "from func: " << tokens << "\n";
 	for (size_t i = 0; i < tokens.size(); i++)
 	{
 		if (tokens[i] == ',')
@@ -25,11 +24,7 @@ void	splitChannels(std::vector<std::string> &token, std::string tokens)
 void	Server::PART(std::vector<std::string> tokens, int fd)
 {
     std::vector<std::string> channelsName;
-	for (size_t i = 0; i < tokens.size(); i++)
-	{
-		std::cout << "tokens: " << tokens[i] << "\n";
-	}
-	
+		
     splitChannels(channelsName, tokens[1]);
 	
 	// // ERR_NEEDMOREPARAMS (461) // if the channel name is empty
