@@ -35,7 +35,6 @@ void	Server::KICK(std::vector<std::string> tokens, int fd)
 
     splitParamsByComma(channelsName, tokens[1]);
     splitParamsByComma(usersName, tokens[2]);
-
 	for (size_t i = 0; i < channelsName.size(); i++)
 	{
 		if (channelsName[i][0] == '#')

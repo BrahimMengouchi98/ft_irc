@@ -20,11 +20,16 @@ void	splitChannels(std::vector<std::string> &token, std::string tokens)
     }
 }
 
-
+// part #ch1
 void	Server::PART(std::vector<std::string> tokens, int fd)
 {
     std::vector<std::string> channelsName;
-		
+
+	if (tokens.size() < 2)
+	{
+		sendResponse(ERR_NOTENOUGHPARAM(getClient(fd)->getNickname()), fd); 
+		return ;
+	}
     splitChannels(channelsName, tokens[1]);
 	
 	// // ERR_NEEDMOREPARAMS (461) // if the channel name is empty

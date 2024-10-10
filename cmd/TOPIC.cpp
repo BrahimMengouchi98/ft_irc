@@ -1,7 +1,9 @@
 # include "../inc/Server.hpp"
 
 // TOPIC CMD
-void		Server::TOPIC(std::vector<std::string> tokens, int fd)
+// topic #ch1
+// topic #ch1 :test
+void Server::TOPIC(std::vector<std::string> tokens, int fd)
 {
 	std::string channelName, topic;
 

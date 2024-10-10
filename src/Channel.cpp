@@ -76,10 +76,13 @@ void Channel::setName(std::string name)
 
 void Channel::setCreateAt()
 {
-	std::time_t _time = std::time(NULL);
-	std::ostringstream oss;
-	oss << _time;
-	this->created_at = std::string(oss.str());
+	std::time_t current = std::time(nullptr);
+	std::tm* localTime = std::localtime(&current);
+    
+    char buffer[100];
+	// Format: YYYY-MM-DD HH:MM:SS
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localTime);
+	this->created_at = std::string(buffer);
 }
 
 void Channel::setModeAtIndex(size_t index, bool mode)
@@ -89,11 +92,14 @@ void Channel::setModeAtIndex(size_t index, bool mode)
 
 void Channel::setTime()
 {
-	std::time_t current = std::time(NULL);
-	std::stringstream res;
-
-	res << current;
-	this->time_creation = std::string(res.str());
+    std::time_t current = std::time(nullptr);
+    std::tm* localTime = std::localtime(&current);
+    
+    char buffer[100];
+	// Format: YYYY-MM-DD HH:MM:SS
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localTime);
+    
+    this->time_creation = std::string(buffer);
 }
 
 void Channel::setTopicRestriction(bool value)
