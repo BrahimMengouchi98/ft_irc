@@ -10,7 +10,7 @@ int Server::fillJoin(std::vector<std::pair<std::string, std::string> > &token, s
 		sendResponse(ERR_NEEDMOREPARAMS(getClient(fd)->getNickname()), fd);
 		return 0;
 	}
-	for (int i = 1; i < tokens.size(); i++)
+	for (size_t i = 1; i < tokens.size(); i++)
 		tmp.push_back(tokens[i]);
 	ch = tmp[0]; 
 	tmp.erase(tmp.begin());

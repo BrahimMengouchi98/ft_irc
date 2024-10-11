@@ -49,6 +49,8 @@ class Channel
 	int getLimit();
 	int getClientsNumber();
 
+	size_t	getAdmins();
+
 	bool getModeAtIndex(size_t index);
 	bool isClientInChannel(std::string &nickname);
 	bool getTopicRestriction();
@@ -60,6 +62,7 @@ class Channel
 	std::string getCreationAt();
 	std::string getClientsInChannel();
 	std::string getModes();
+	std::string getFirstNickname();
 	
 	Client *getClient(int fd);
 	Client *getAdmin(int fd);

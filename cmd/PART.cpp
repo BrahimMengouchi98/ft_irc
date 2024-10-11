@@ -84,6 +84,11 @@ void	Server::PART(std::vector<std::string> tokens, int fd)
 					channels[j].removeClient(channels[j].getClientInChannel(getClient(fd)->getNickname())->getFd());
 				if (channels[j].getClientsNumber() == 0)
 					removeChannel(channels[j].getName());
+				else if (channels[j].getAdmins() == 0)
+				{
+					std::string nickname = channels[j].getFirstNickname();
+					channels[j].changeClientToAdmin(nickname);
+				}
 					// channels.erase(channels.begin() + i);
 			}
 		}

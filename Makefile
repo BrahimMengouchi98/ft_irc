@@ -1,6 +1,6 @@
 NAME = ircserv
 CC = c++
-CFLAGS = -std=c++98 #-Wall -Wextra -Werror 
+CFLAGS = -std=c++98 -Wall -Wextra -Werror 
 
 SRCS = main.cpp src/Client.cpp src/Server.cpp src/Auth.cpp \
 		src/Channel.cpp cmd/JOIN.cpp cmd/PRIVMSG.cpp cmd/MODE.cpp \

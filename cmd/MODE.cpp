@@ -126,22 +126,12 @@ bool	Server::operator_mode(std::string token, Channel *channel, int fd, char ope
 	if(opera == '+')
 	{
 		channel->setModeAtIndex(3, true);
-		if(channel->changeClientToAdmin(user))
-		{
-			// if(!arguments.empty())
-			// 	arguments += " ";
-			// arguments += user;
-		}
+		channel->changeClientToAdmin(user);
 	}
 	else if (opera == '-')
 	{
 		channel->setModeAtIndex(3,false);
-		if(channel->changeAdminToClient(user))
-		{
-			// 	if(!arguments.empty())
-			// 		arguments += " ";
-			// arguments += user;
-		}
+		channel->changeAdminToClient(user);
 	}
 	return true;
 }

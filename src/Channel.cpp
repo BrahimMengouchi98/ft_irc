@@ -196,6 +196,11 @@ Client *Channel::getClient(int fd)
 	return NULL;
 }
 
+size_t	Channel::getAdmins()
+{
+	return admins.size();
+}
+
 Client *Channel::getAdmin(int fd)
 {
 	for (std::vector<Client>::iterator it = admins.begin(); it != admins.end(); ++it)
@@ -240,6 +245,11 @@ std::string Channel::getClientsInChannel()
 			list += " ";
 	}
 	return list;
+}
+
+std::string	Channel::getFirstNickname()
+{
+	return clients[0].getNickname();
 }
 
 std::string Channel::getModes()

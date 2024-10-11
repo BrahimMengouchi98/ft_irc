@@ -28,6 +28,11 @@ void	Server::QUIT(std::vector<std::string> tokens, int fd)
 			{
 				std::string rpl = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost QUIT " + reason + "\r\n";
 				channels[i].sendToAll(rpl);
+				if (channels[i].getAdmins() == 0)
+				{
+					std::string nickname = channels[i].getFirstNickname();
+					channels[i].changeClientToAdmin(nickname);
+				}
 			}
 		}
 	}
